@@ -14,7 +14,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiButton: {
       label: {
-        '& > svg': { marginRight: 8 },
+        '& > svg': { marginLeft: 8 },
       },
     },
   },
