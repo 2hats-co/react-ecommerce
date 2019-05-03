@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   AppBar,
   Toolbar,
@@ -9,11 +10,13 @@ import {
   Grid,
   Hidden,
 } from '@material-ui/core';
+
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCartRounded';
+import FilterIcon from '@material-ui/icons/FilterListRounded';
+
 import { makeStyles } from '@material-ui/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
-import FilterIcon from '@material-ui/icons/FilterListRounded';
 
 const useStyles = makeStyles(theme => ({
   root: {
