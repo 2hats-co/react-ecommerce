@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import {
   AppBar,
@@ -14,6 +15,8 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCartRounded';
 import FilterIcon from '@material-ui/icons/FilterListRounded';
+
+import CartContext from '../contexts/CartContext';
 
 import { makeStyles } from '@material-ui/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
@@ -73,6 +76,8 @@ const TopBar = props => {
   };
 
   const classes = useStyles();
+  const cartContext = useContext(CartContext);
+
   return (
     <div className={classes.grow}>
       <AppBar position="fixed" className={classes.root}>
@@ -104,7 +109,7 @@ const TopBar = props => {
             </div>
           </Grid>
           <Grid item>
-            <IconButton color="inherit">
+            <IconButton color="inherit" component={Link} to="/cart">
               <Badge badgeContent={5} color="secondary">
                 <ShoppingCartIcon />
               </Badge>

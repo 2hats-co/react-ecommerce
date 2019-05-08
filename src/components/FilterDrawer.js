@@ -3,19 +3,18 @@ import React from 'react';
 import {
   Drawer,
   List,
-  Divider,
+  ListSubheader,
   ListItem,
-  ListItemIcon,
   ListItemText,
   Hidden,
+  Checkbox,
 } from '@material-ui/core';
-
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
+
+import data from '../constants/shop-items.json';
 
 const drawerWidth = 240;
 
@@ -31,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  categoryButton: { textTransform: 'capitalize' },
 }));
 
 function FilterDrawer(props) {
@@ -58,23 +58,11 @@ function FilterDrawer(props) {
         <div className={classes.toolbar} />
       </Hidden>
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
+        <ListSubheader>Filter by category</ListSubheader>
+        {data.categories.map(x => (
+          <ListItem button key={x}>
+            <Checkbox tabIndex={-1} disableRipple />
+            <ListItemText primary={x} className={classes.categoryButton} />
           </ListItem>
         ))}
       </List>
