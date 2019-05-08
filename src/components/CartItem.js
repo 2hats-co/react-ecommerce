@@ -53,10 +53,13 @@ const useStyles = makeStyles(theme => ({
 
 const CartItem = props => {
   const { title, qty, id } = props;
+  const cartContext = useContext(CartContext);
 
   const classes = useStyles(props);
 
-  const handleDelete = () => {};
+  const handleDelete = () => {
+    cartContext.removeFromCart(id);
+  };
 
   return (
     <Grid container className={classes.root} alignItems="center">

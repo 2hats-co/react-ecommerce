@@ -34,7 +34,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function FilterDrawer(props) {
-  const { showFilterDrawer, setShowFilterDrawer } = props;
+  const {
+    showFilterDrawer,
+    setShowFilterDrawer,
+    filters,
+    updateFilters,
+  } = props;
   const classes = useStyles();
 
   const theme = useTheme();
@@ -60,8 +65,12 @@ function FilterDrawer(props) {
       <List>
         <ListSubheader>Filter by category</ListSubheader>
         {data.categories.map(x => (
-          <ListItem button key={x}>
-            <Checkbox tabIndex={-1} disableRipple />
+          <ListItem button key={x} onClick={() => updateFilters(x)}>
+            <Checkbox
+              tabIndex={-1}
+              disableRipple
+              checked={filters.includes(x)}
+            />
             <ListItemText primary={x} className={classes.categoryButton} />
           </ListItem>
         ))}

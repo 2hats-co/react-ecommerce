@@ -110,7 +110,7 @@ const TopBar = props => {
           </Grid>
           <Grid item>
             <IconButton color="inherit" component={Link} to="/cart">
-              <Badge badgeContent={5} color="secondary">
+              <Badge badgeContent={cartContext.count} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import {
   Card,
@@ -34,6 +34,7 @@ function ShopItem(props) {
   const { title, image, description, price, id } = props;
 
   const classes = useStyles();
+  const cartContext = useContext(CartContext);
 
   return (
     <Card className={classes.card}>
@@ -69,7 +70,13 @@ function ShopItem(props) {
 
         <Grid item>
           <CardActions>
-            <Button size="small" color="primary">
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => {
+                cartContext.addToCart(id);
+              }}
+            >
               Add to cart
               <AddShoppingCartIcon />
             </Button>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import data from '../constants/shop-items.json';
 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
@@ -18,29 +19,30 @@ const ShopContainer = props => {
   const classes = useStyles();
 
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
+  const [filters, setFilters] = useState([]);
 
-  // const updateFilters = filter => {
-  //   const index = filters.indexOf(filter);
-  //   if (index > -1) {
-  //     const newFilters = [...filters];
-  //     newFilters.splice(index, 1);
-  //     setFilters(newFilters);
-  //     console.log('new', newFilters);
-  //   } else {
-  //     setFilters([...filters, filter]);
-  //   }
-  // };
+  const updateFilters = filter => {
+    const index = filters.indexOf(filter);
+    if (index > -1) {
+      const newFilters = [...filters];
+      newFilters.splice(index, 1);
+      setFilters(newFilters);
+      console.log('new', newFilters);
+    } else {
+      setFilters([...filters, filter]);
+    }
+  };
 
-  // useEffect(() => {
-  //   console.log(filters);
-  // }, [filters]);
+  useEffect(() => {
+    console.log(filters);
+  }, [filters]);
 
-  // const filteredItems =
-  //   filters.length > 0
-  //     ? data.items.filter(item =>
-  //         item.categories.some(cat => filters.includes(cat))
-  //       )
-  //     : data.items;
+  const filteredItems =
+    filters.length > 0
+      ? data.items.filter(item =>
+          item.categories.some(cat => filters.includes(cat))
+        )
+      : data.items;
 
   return (
     <>
@@ -50,6 +52,8 @@ const ShopContainer = props => {
           <FilterDrawer
             showFilterDrawer={showFilterDrawer}
             setShowFilterDrawer={setShowFilterDrawer}
+            filters={filters}
+            updateFilters={updateFilters}
           />
         </Grid>
         <Grid item xs>
@@ -59,110 +63,11 @@ const ShopContainer = props => {
             justify="center"
             className={classes.itemGrid}
           >
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
-            <Grid item>
-              <ShopItem
-                title="Lizard"
-                description="Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica"
-                image="contemplative-reptile.jpg"
-              />
-            </Grid>
+            {filteredItems.map(x => (
+              <Grid item key={x.id}>
+                <ShopItem {...x} />
+              </Grid>
+            ))}
           </Grid>
         </Grid>
       </Grid>

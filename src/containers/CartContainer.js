@@ -61,10 +61,10 @@ const CartContainer = props => {
 
   const cartContext = useContext(CartContext);
 
-  // const getItemFromId = id => data.items.filter(x => x.id === id)[0];
-  // const total = Object.keys(cartContext.cart)
-  //   .reduce((a, c) => a + getItemFromId(c).price * cartContext.cart[c], 0)
-  //   .toFixed(2);
+  const getItemFromId = id => data.items.filter(x => x.id === id)[0];
+  const total = Object.keys(cartContext.cart)
+    .reduce((a, c) => a + getItemFromId(c).price * cartContext.cart[c], 0)
+    .toFixed(2);
 
   return (
     <Container maxWidth="md" className={classes.root}>
@@ -87,8 +87,8 @@ const CartContainer = props => {
       <Divider />
 
       <section className={classes.cartItemsSection}>
-        {/* {cartContext.count > 0 ? (
-          cartContext.cart.map(id => (
+        {cartContext.count > 0 ? (
+          Object.keys(cartContext.cart).map(id => (
             <CartItem
               key={id}
               id={id}
@@ -99,7 +99,7 @@ const CartContainer = props => {
           ))
         ) : (
           <CartNoItems />
-        )} */}
+        )}
       </section>
 
       <Divider />
@@ -108,7 +108,7 @@ const CartContainer = props => {
         <Typography variant="h6" color="textSecondary">
           Total
         </Typography>
-        <Typography variant="h4">$00.00</Typography>
+        <Typography variant="h4">${total}</Typography>
 
         <Fab
           variant="extended"

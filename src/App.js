@@ -8,33 +8,38 @@ import ShopContainer from './containers/ShopContainer';
 import CartContainer from './containers/CartContainer';
 import CheckoutContainer from './containers/CheckoutContainer';
 
-function App(props) {
-  // useEffect(() => {
-  //   console.log(cart);
-  // }, [cart]);
+import CartContext from './contexts/CartContext';
 
-  // const addToCart = itemId => {
-  //   const oldQty = cart[itemId] || 0;
-  //   const newCart = { ...cart };
-  //   newCart[itemId] = oldQty + 1;
-  //   setCart(newCart);
-  // };
-  // const removeFromCart = itemId => {
-  //   if (cart.hasOwnProperty(itemId)) {
-  //     const newCart = { ...cart };
-  //     delete newCart[itemId];
-  //     setCart(newCart);
-  //   }
-  // };
-  // const count = Object.keys(cart).reduce((a, c) => a + cart[c], 0);
+function App(props) {
+  const [cart, setCart] = useState({ '4506344472': 1, '0090177460': 1 });
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
+  const addToCart = itemId => {
+    const oldQty = cart[itemId] || 0;
+    const newCart = { ...cart };
+    newCart[itemId] = oldQty + 1;
+    setCart(newCart);
+  };
+  const removeFromCart = itemId => {
+    if (cart.hasOwnProperty(itemId)) {
+      const newCart = { ...cart };
+      delete newCart[itemId];
+      setCart(newCart);
+    }
+  };
+  const count = Object.keys(cart).reduce((a, c) => a + cart[c], 0);
 
   return (
     <ThemeProvider theme={theme}>
-      <Router>
-        <Route exact path="/" component={ShopContainer} />
-        <Route path="/cart" component={CartContainer} />
-        <Route path="/checkout" component={CheckoutContainer} />
-      </Router>
+      <CartContext.Provider value={{ cart, addToCart, removeFromCart, count }}>
+        <Router>
+          <Route exact path="/" component={ShopContainer} />
+          <Route path="/cart" component={CartContainer} />
+          <Route path="/checkout" component={CheckoutContainer} />
+        </Router>
+      </CartContext.Provider>
     </ThemeProvider>
   );
 }
