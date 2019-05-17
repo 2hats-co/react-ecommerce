@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Drawer,
@@ -14,7 +14,10 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 import { makeStyles } from '@material-ui/core/styles';
 
-import data from '../constants/shop-items.json';
+import Loading from './Loading';
+import NoItems from '../components/NoItems';
+
+import { API_URL } from '../constants/api';
 
 const drawerWidth = 240;
 
@@ -33,6 +36,12 @@ const useStyles = makeStyles(theme => ({
   categoryButton: { textTransform: 'capitalize' },
 }));
 
+const getCategories = async () => {
+  const res = await fetch(API_URL + '/categories');
+  const data = await res.json();
+  return data;
+};
+
 function FilterDrawer(props) {
   const {
     showFilterDrawer,
@@ -49,6 +58,16 @@ function FilterDrawer(props) {
     setShowFilterDrawer(false);
   };
 
+  const [categories, setCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    getCategories().then(data => {
+      setCategories(data);
+      setIsLoading(false);
+    });
+  }, []);
+
   return (
     <Drawer
       className={classes.drawer}
@@ -64,16 +83,22 @@ function FilterDrawer(props) {
       </Hidden>
       <List>
         <ListSubheader>Filter by category</ListSubheader>
-        {data.categories.map(x => (
-          <ListItem button key={x} onClick={() => updateFilters(x)}>
-            <Checkbox
-              tabIndex={-1}
-              disableRipple
-              checked={filters.includes(x)}
-            />
-            <ListItemText primary={x} className={classes.categoryButton} />
-          </ListItem>
-        ))}
+        {isLoading ? (
+          <Loading />
+        ) : categories.length === 0 ? (
+          <NoItems />
+        ) : (
+          categories.map(x => (
+            <ListItem button key={x} onClick={() => updateFilters(x)}>
+              <Checkbox
+                tabIndex={-1}
+                disableRipple
+                checked={filters.includes(x)}
+              />
+              <ListItemText primary={x} className={classes.categoryButton} />
+            </ListItem>
+          ))
+        )}
       </List>
     </Drawer>
   );

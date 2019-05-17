@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Typography } from '@material-ui/core';
 
-const CartNoItems = () => (
+const NoItems = () => (
   <Typography
     variant="h6"
     color="textSecondary"
@@ -13,4 +13,4 @@ const CartNoItems = () => (
   </Typography>
 );
 
-export default CartNoItems;
+export default NoItems;

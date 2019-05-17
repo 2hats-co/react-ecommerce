@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TopBar = props => {
-  const { setShowFilterDrawer } = props;
+  const { setShowFilterDrawer, setSearchQuery, searchQuery } = props;
 
   const handleClickFilterButton = () => {
     setShowFilterDrawer(showFilterDrawer => !showFilterDrawer);
@@ -100,10 +100,14 @@ const TopBar = props => {
                 <SearchIcon />
               </div>
               <InputBase
+                value={searchQuery}
                 placeholder="Search…"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
+                }}
+                onChange={e => {
+                  setSearchQuery(e.target.value);
                 }}
               />
             </div>
