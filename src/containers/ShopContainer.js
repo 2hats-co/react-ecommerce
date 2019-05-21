@@ -9,8 +9,7 @@ import ShopItem from '../components/ShopItem';
 import FilterDrawer from '../components/FilterDrawer';
 import Loading from '../components/Loading';
 import NoItems from '../components/NoItems';
-
-import { API_URL } from '../constants/api';
+import useApi from '../hooks/useApi';
 
 const useStyles = makeStyles(theme => ({
   itemGrid: {
@@ -19,40 +18,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const getData = async () => {
-  const res = await fetch(API_URL + '/items');
-  const data = await res.json();
-  return data;
-};
-
-const getFilteredData = async filters => {
-  const categories = qs.stringify({ category: filters });
-  const res = await fetch(API_URL + '/items?' + categories);
-  const data = await res.json();
-  return data;
-};
-
-const getSearchResult = async searchQuery => {
-  const res = await fetch(API_URL + '/items?search=' + searchQuery);
-  const data = await res.json();
-  return data;
-};
-
 const ShopContainer = props => {
   const classes = useStyles();
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [showFilterDrawer, setShowFilterDrawer] = useState(false);
   const [filters, setFilters] = useState([]);
 
-  useEffect(() => {
-    getData().then(data => {
-      setItems(data);
-      setIsLoading(false);
-    });
-  }, []);
+  const [items, isLoading, setQuery] = useApi('/items');
 
   const updateFilters = filter => {
     const index = filters.indexOf(filter);
@@ -67,20 +40,14 @@ const ShopContainer = props => {
   };
 
   useEffect(() => {
-    setIsLoading(true);
-    getFilteredData(filters).then(data => {
-      setItems(data);
-      setIsLoading(false);
-    });
+    if (filters.length > 0) {
+      const categories = qs.stringify({ category: filters });
+      setQuery('/items?' + categories);
+    }
   }, [filters]);
 
   useEffect(() => {
-    console.log(searchQuery);
-    setIsLoading(true);
-    getSearchResult(searchQuery).then(data => {
-      setItems(data);
-      setIsLoading(false);
-    });
+    if (searchQuery) setQuery('/items?search=' + searchQuery);
   }, [searchQuery]);
 
   return (

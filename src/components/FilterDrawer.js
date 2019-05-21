@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useApi from '../hooks/useApi';
 
 import {
   Drawer,
@@ -36,12 +37,6 @@ const useStyles = makeStyles(theme => ({
   categoryButton: { textTransform: 'capitalize' },
 }));
 
-const getCategories = async () => {
-  const res = await fetch(API_URL + '/categories');
-  const data = await res.json();
-  return data;
-};
-
 function FilterDrawer(props) {
   const {
     showFilterDrawer,
@@ -58,15 +53,7 @@ function FilterDrawer(props) {
     setShowFilterDrawer(false);
   };
 
-  const [categories, setCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    getCategories().then(data => {
-      setCategories(data);
-      setIsLoading(false);
-    });
-  }, []);
+  const [categories, isLoading, setQuery] = useApi('/categories');
 
   return (
     <Drawer
