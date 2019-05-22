@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useApi from '../hooks/useApi';
 
 import {
@@ -17,8 +17,6 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Loading from './Loading';
 import NoItems from '../components/NoItems';
-
-import { API_URL } from '../constants/api';
 
 const drawerWidth = 240;
 
@@ -53,7 +51,7 @@ function FilterDrawer(props) {
     setShowFilterDrawer(false);
   };
 
-  const [categories, isLoading, setQuery] = useApi('/categories');
+  const [categories, isLoading] = useApi('/categories');
 
   return (
     <Drawer

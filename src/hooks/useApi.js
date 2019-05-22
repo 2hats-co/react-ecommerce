@@ -7,7 +7,6 @@ function useApi(initialQuery) {
   const [items, setItems] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
-  console.log('useAPI was called', query, isLoading, items.length);
 
   useEffect(() => {
     (async () => {
