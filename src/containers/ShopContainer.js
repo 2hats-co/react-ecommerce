@@ -33,7 +33,6 @@ const ShopContainer = props => {
       const newFilters = [...filters];
       newFilters.splice(index, 1);
       setFilters(newFilters);
-      console.log('new', newFilters);
     } else {
       setFilters([...filters, filter]);
     }
@@ -43,11 +42,14 @@ const ShopContainer = props => {
     if (filters.length > 0) {
       const categories = qs.stringify({ category: filters });
       setQuery('/items?' + categories);
+    } else {
+      setQuery('/items');
     }
   }, [filters]);
 
   useEffect(() => {
     if (searchQuery) setQuery('/items?search=' + searchQuery);
+    else setQuery('/items');
   }, [searchQuery]);
 
   return (
