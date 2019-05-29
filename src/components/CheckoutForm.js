@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Grid, Fab } from '@material-ui/core';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { TextField } from 'formik-material-ui';
 import * as Yup from 'yup';
 import valid from 'card-validator';
 
-import { API_URL } from '../constants/api';
+const API_URL = process.env.REACT_APP_API_URL;
 
 const CheckoutSchema = Yup.object().shape({
   firstName: Yup.string().required('Required'),

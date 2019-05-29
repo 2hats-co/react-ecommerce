@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { API_URL } from '../constants/api';
+const API_URL = process.env.REACT_APP_API_URL;
 
 function useApi(initialQuery) {
   const [query, setQuery] = useState(initialQuery);

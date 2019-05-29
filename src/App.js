@@ -11,15 +11,15 @@ import CheckoutContainer from './containers/CheckoutContainer';
 import CartContext from './contexts/CartContext';
 
 function App(props) {
-  const [cart, setCart] = useState({ '4506344472': 1, '0090177460': 1 });
+  const [cart, setCart] = useState({});
   useEffect(() => {
     console.log(cart);
   }, [cart]);
 
-  const addToCart = itemId => {
-    const oldQty = cart[itemId] || 0;
+  const addToCart = (itemId, data) => {
+    const oldQty = cart[itemId] ? cart[itemId].qty : 0;
     const newCart = { ...cart };
-    newCart[itemId] = oldQty + 1;
+    newCart[itemId] = { qty: oldQty + 1, ...data };
     setCart(newCart);
   };
   const removeFromCart = itemId => {
@@ -29,7 +29,7 @@ function App(props) {
       setCart(newCart);
     }
   };
-  const count = Object.keys(cart).reduce((a, c) => a + cart[c], 0);
+  const count = Object.keys(cart).reduce((a, c) => a + cart[c].qty, 0);
 
   return (
     <ThemeProvider theme={theme}>

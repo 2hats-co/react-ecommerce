@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -17,10 +17,7 @@ import ArrowForwardIcon from '@material-ui/icons/ArrowForwardRounded';
 import CartContext from '../contexts/CartContext';
 import CartItem from '../components/CartItem';
 
-import Loading from '../components/Loading';
 import NoItems from '../components/NoItems';
-
-import { API_URL } from '../constants/api';
 
 import { makeStyles } from '@material-ui/styles';
 
@@ -64,34 +61,11 @@ const CartContainer = props => {
 
   const cartContext = useContext(CartContext);
 
-  const [items, setItems] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setIsLoading(true);
-    const getData = async () => {
-      const tempItems = [];
-      let tempTotal = 0;
-
-      const promises = Object.keys(cartContext.cart).map(async itemId => {
-        const res = await fetch(API_URL + '/item/' + itemId);
-        const data = await res.json();
-        tempItems.push(data);
-        tempTotal += data.price * cartContext.cart[itemId];
-      });
-
-      await Promise.all(promises);
-
-      return [tempItems, tempTotal];
-    };
-
-    getData().then(([tempItems, tempTotal]) => {
-      setItems(tempItems);
-      setTotal(tempTotal);
-      setIsLoading(false);
-    });
-  }, [cartContext.cart]);
+  const items = cartContext.cart;
+  const total = Object.keys(items).reduce(
+    (a, c) => a + items[c].qty * items[c].price,
+    0
+  );
 
   useEffect(() => console.log(items), [items]);
 
@@ -117,19 +91,15 @@ const CartContainer = props => {
 
       <section className={classes.cartItemsSection}>
         {cartContext.count > 0 ? (
-          isLoading ? (
-            <Loading />
-          ) : (
-            items.map(item => (
-              <CartItem
-                key={item.id}
-                id={item.id}
-                title={item.title}
-                image={item.image}
-                qty={cartContext.cart[item.id]}
-              />
-            ))
-          )
+          Object.values(items).map(item => (
+            <CartItem
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              image={item.image}
+              qty={item.qty}
+            />
+          ))
         ) : (
           <NoItems />
         )}

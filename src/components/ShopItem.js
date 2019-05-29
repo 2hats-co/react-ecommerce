@@ -74,7 +74,7 @@ function ShopItem(props) {
               size="small"
               color="primary"
               onClick={() => {
-                cartContext.addToCart(id);
+                cartContext.addToCart(id, props);
               }}
             >
               Add to cart

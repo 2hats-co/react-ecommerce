@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const TopBar = props => {
-  const { setShowFilterDrawer, setSearchQuery, searchQuery } = props;
+  const { setShowFilterDrawer, setSearchQuery } = props;
 
   const handleClickFilterButton = () => {
     setShowFilterDrawer(showFilterDrawer => !showFilterDrawer);
@@ -77,6 +77,15 @@ const TopBar = props => {
 
   const classes = useStyles();
   const cartContext = useContext(CartContext);
+
+  let timeout;
+  const handleOnChange = e => {
+    clearTimeout(timeout);
+    const value = e.target.value;
+    timeout = setTimeout(() => {
+      setSearchQuery(value);
+    }, 500);
+  };
 
   return (
     <div className={classes.grow}>
@@ -100,15 +109,12 @@ const TopBar = props => {
                 <SearchIcon />
               </div>
               <InputBase
-                value={searchQuery}
                 placeholder="Search…"
                 classes={{
                   root: classes.inputRoot,
                   input: classes.inputInput,
                 }}
-                onChange={e => {
-                  setSearchQuery(e.target.value);
-                }}
+                onChange={handleOnChange}
               />
             </div>
           </Grid>
