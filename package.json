@@ -29,5 +29,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "source-map-explorer": "^1.8.0"
+  }
 }
