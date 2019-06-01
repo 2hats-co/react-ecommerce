@@ -1,28 +1,47 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+import { ThemeProvider } from '@material-ui/styles';
+import theme from './theme';
+
+import ShopContainer from './containers/ShopContainer';
+import CartContainer from './containers/CartContainer';
+import CheckoutContainer from './containers/CheckoutContainer';
+
+import CartContext from './contexts/CartContext';
+
+function App(props) {
+  const [cart, setCart] = useState({});
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
+  const addToCart = (itemId, data) => {
+    const oldQty = cart[itemId] ? cart[itemId].qty : 0;
+    const newCart = { ...cart };
+    newCart[itemId] = { qty: oldQty + 1, ...data };
+    setCart(newCart);
+  };
+  const removeFromCart = itemId => {
+    if (cart.hasOwnProperty(itemId)) {
+      const newCart = { ...cart };
+      delete newCart[itemId];
+      setCart(newCart);
+    }
+  };
+  const count = Object.keys(cart).reduce((a, c) => a + cart[c].qty, 0);
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CartContext.Provider value={{ cart, addToCart, removeFromCart, count }}>
+        <Router>
+          <Route exact path="/" component={ShopContainer} />
+          <Route path="/cart" component={CartContainer} />
+          <Route path="/checkout" component={CheckoutContainer} />
+        </Router>
+      </CartContext.Provider>
+    </ThemeProvider>
+  );
 }
 
 export default App;
